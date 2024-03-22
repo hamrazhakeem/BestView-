@@ -1,0 +1,80 @@
+{% extends 'usershome/base.html' %}
+{% load static %}
+{% block title %}Address{% endblock %}
+{% block content %}
+
+<div class="my-account-wrapper pb-100 pt-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- My Account Page Start -->
+                <div class="myaccount-page-wrapper">
+                    <!-- My Account Tab Menu Start -->
+                    <div class="row">
+                        <div class="col-lg-3 col-md-12">
+                            <div class="myaccount-tab-menu nav" role="tablist">
+                                <a href="{% url 'userprofile:profile' user_id=user.id %}" >Dashboard</a>
+                                <a href="{% url 'userprofile:orders' %}">Orders</a>
+                                <a href="{% url 'userprofile:wallet' %}">Wallet</a>
+                                <a href="{% url 'userprofile:address' %}" class="active">Address</a>
+                                <a href="{% url 'userprofile:coupon' %}">Coupon</a>
+                                <a href="{% url 'signout' %}">Logout</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 col-md-12">
+                            <div class="tab-content" id="myaccountContent">
+                                <h1 style="display: inline-block;">Addresses</h1>
+                                <a href="{% url 'userprofile:add_address' %}" class="check-btn sqr-btn" style="display: inline-block; margin-left: 10px; color:green;">
+                                    <i class="fa fa-plus-circle"></i> Add
+                                </a><br>
+                                {% if addresses %}
+                                {% for address in addresses %}
+                                <table class="table table-bordered" style="text-align: center; width: 75%;">
+                                    <tr>
+                                        <th style="padding: 10px;">Field</th>
+                                        <th style="padding: 10px;">Data</th>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 10px;">House/Building Name</td>
+                                        <td style="padding: 10px;">{{ address.house_or_building_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 10px;">Street Address</td>
+                                        <td style="padding: 10px;">{{ address.street_address }}</td>
+                                    <tr>
+                                        <td style="padding: 10px;">City</td>
+                                        <td style="padding: 10px;">{{ address.city }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 10px;">District</td>
+                                        <td style="padding: 10px;">{{ address.district }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 10px;">Pincode</td>
+                                        <td style="padding: 10px;">{{ address.pincode }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 10px;">State</td>
+                                        <td style="padding: 10px;">{{ address.state }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 10px;">Phone No.</td>
+                                        <td style="padding: 10px;">{{ address.phone_no }}</td>
+                                    </tr>
+                                </table>
+                                <a href="{% url 'userprofile:edit_address' address_id=address.id %}" class="check-btn sqr-btn" style="color: grey;"><i class="fa fa-edit"></i> Edit</a>
+                                <a href="{% url 'userprofile:delete_address' address_id=address.id %}" class="check-btn sqr-btn " style="color: rgb(255, 55, 0);"><i class="fa fa-trash"></i> Delete</a>
+                                {% endfor %}
+                                {% else %}
+                                No Address Saved. Tap the 'Add' Button.
+                                {% endif %}                 
+                                <!-- Single Tab Content End -->                
+                            </div>
+                        </div> <!-- My Account Tab Content End -->
+                    </div>
+                </div> <!-- My Account Page End -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

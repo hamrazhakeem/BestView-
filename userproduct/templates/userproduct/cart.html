@@ -1,0 +1,150 @@
+{% extends 'usershome/base.html' %}
+{% load static %}
+
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+
+<style>
+    .center-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .grand_total{
+        margin-top: -100px;
+    }
+    .table-responsive {
+        margin-top: -50px;
+    }
+</style>
+
+<div class="cart-area pt-100 pb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form action="#">
+                    <div class="cart-table-content">
+                        <div class="table-content table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="width-thumbnail"></th>
+                                        <th class="width-name">Product</th>
+                                        <th>Color</th>
+                                        <th class="width-price"> Price</th>
+                                        <th class="width-quantity">Quantity</th>
+                                        <th class="width-subtotal">Subtotal</th>
+                                        <th class="width-remove"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in cart_items %}
+                                    <tr>
+                                        <td class="product-thumbnail">
+                                            <a href="{% url 'userproduct:product_details' pk=item.product.pk %}"><img src="{{ item.product_variant.thumbnail.url }}" alt=""></a>
+                                        </td>                                        
+                                        <td class="product-name">
+                                            <h5><a href="{% url 'userproduct:product_details' pk=item.product.pk %}">{{ item.product.name }}</a></h5>
+                                        </td>
+                                        <td class="product-name">
+                                            <h5>{{ item.product_variant.color }}</h5>
+                                        </td>
+                                        <td class="product-cart-price"><span class="amount">{% if item.product.offer_price %}
+                                            <span class="new-price">${{ item.product.offer_price }}</span>
+                                        {% else %}
+                                            <span class="new-price">${{ item.product.price }}</span>
+                                        {% endif %}</span></td>
+                                        <td>
+                                            <div class="custom-quantity">
+                                                <input type="number" class="cart-plus-minus-box qty text" id="qty_{{ item.id }}" name="qtybutton" value="{{ item.quantity }}" min="1" max="{{ item.product_variant.quantity }}+1" style="border: 1px rounded #ccc; padding: 5px; width: 50px; text-align: center;">
+                                            </div>
+                                        </td>                                        
+                                        <td class="product-total">$<span id="subtotal_{{item.id}}">{{ item.subtotal }}</span></td>
+                                        <td class="product-remove"><a href="{% url 'userproduct:delete_from_cart' variant_id=item.product_variant.id %}"><i class=" ti-trash "></i></a></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="cart-shiping-update-wrapper">
+                                <div class="cart-shiping-update btn-hover">
+                                    <a href="{% url 'shop' %}">Continue Shopping</a>
+                                </div>
+                                <div class="cart-clear-wrap">
+                                    <div class="cart-clear btn-hover">
+                                        <a href="{% url 'userproduct:clear_cart' cart_id=cart.id %}">Clear Cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row" style="margin-top: -30px;"> <!-- Adjust the margin-top value as needed -->
+            <div class="center-wrapper">
+                <div class="col-lg-4 col-md-12 col-12 d-flex justify-content-center">
+                    <div class="grand-total-wrap">
+                        <!-- <div class="grand-total-content">
+                            <div style="display: flex;">
+                                <h6 style="font-weight: 700;">Total Before Discount/Offer $<h6 id="total" style="font-weight: 700;">{{ cart.total }}</h6></h6>
+                            </div>
+                        </div> -->
+                        <div class="grand-total-btn btn-hover">
+                            <div style="display: flex;">
+                                <h5>Grand Total - $<h5 id="total">{{ cart.total }}</h5></h5>
+                            </div>
+                            <div class="mt-3">
+                                <a class="btn theme-color" href="{% url 'user_order_and_payment:order_address' %}">Proceed to checkout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.cart-plus-minus-box').change(function() {
+            var itemId = $(this).attr('id').split('_')[1];
+            var newQuantity = parseInt($(this).val());
+            var maxQuantity = parseInt($(this).attr('max'));
+
+            if (newQuantity > maxQuantity) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Quantity exceeds available quantity.',
+                });
+
+                $(this).val(maxQuantity);
+
+                newQuantity = maxQuantity;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/update_cart_item/',
+                data: {
+                    'item_id': itemId,
+                    'quantity': newQuantity,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    $('#subtotal_' + itemId).text(response.subtotal);
+                    $('#total').text(response.total);
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

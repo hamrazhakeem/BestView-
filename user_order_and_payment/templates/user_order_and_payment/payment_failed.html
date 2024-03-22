@@ -1,0 +1,53 @@
+{% extends 'usershome/base.html' %}
+{% load static %}
+
+{% block title %}Payment Failed{% endblock %}
+
+{% block content %}
+<style>
+    .payment-failed-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 80vh;
+        text-align: center;
+    }
+    .payment-failed-heading {
+        font-size: 3em; /* Increase heading font size */
+        margin-bottom: 20px; /* Add space below heading */
+    }
+    .payment-failed-message {
+        font-size: 1.5em; /* Increase message font size */
+        margin-bottom: 30px; /* Add space below message */
+    }
+    .btn-primary {
+        font-size: 1.5em; /* Set font size for Home button */
+        margin-top: 10px;
+        border: none; /* Remove border */
+        padding: 10px 20px; /* Add padding */
+        border-radius: 5px; /* Add border-radius */
+        text-decoration: none; /* Remove underline */
+        cursor: pointer;
+    }
+    .btn-home {
+        font-size: 1.5em; /* Set font size for Home button */
+        margin-top: 10px; /* Add margin-top */
+        background-color: #e97730; /* Orange background color */
+        color: white; /* White text color */
+        border: none; /* Remove border */
+        padding: 10px 20px; /* Add padding */
+        border-radius: 5px; /* Add border-radius */
+        text-decoration: none; /* Remove underline */
+        cursor: pointer; /* Change cursor on hover */
+    }
+</style>
+
+<div class="payment-failed-container">
+    <i class="fa-solid fa-ban mb-3" style="color: #ff0000; font-size: 5em;"></i>
+    <h1 class="payment-failed-heading">Payment Failed</h1>
+    <p class="payment-failed-message">Sorry, your payment could not be processed. Please try again later or choose a different payment method.</p>
+    <a href="{% url 'user_order_and_payment:payment_method' %}" class="btn btn-primary" style="font-size: 1.5em;">Try Again</a>
+    <a href="{% url 'home' %}"><button class="btn btn-home theme-color mt-3" style="font-size: 1.5em; background-color: #e97730; color: white; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='black'" onmouseout="this.style.backgroundColor='#e97730'">Home</button></a> <!-- Increase button font size -->
+</div>
+{% endblock %}

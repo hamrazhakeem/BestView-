@@ -1,0 +1,136 @@
+{% extends 'adminshome/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Manage Order{% endblock %}
+
+{% block content %}
+
+<style>
+    .orange-text {
+        color: orange;
+    }
+    
+    .grey-text {
+        color: grey;
+    }
+    
+    .blue-text {
+        color: blue; /* Adjust the color as needed */
+    }
+
+    .green-text {
+        color: green;
+    }
+    
+    .red-text {
+        color: red;
+    }
+    .black-text {
+        color: rgb(0, 0, 0);
+    }
+</style>
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div style="display: flex; justify-content: space-between;">
+          <h4 class="card-title">Manage Order</h4>
+        </div>
+        <form method="GET" action="{% url 'admin_order_and_payment:manage_order' %}" class="search-form form-inline">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" name="q" value="{% if query %}{{ query }}{% endif %}" placeholder="Search Order ID" class="form-control">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-success">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="table-responsive mt-5">
+            {% if orderitems %}
+          <table class="table table-bordered" style="background-color: #f2f2f2;">
+              <thead>
+                  <tr>
+                      <th>Order ID</th>
+                      <th>Customer ID</th>
+                      <th>Customer Name</th>
+                      <th>Product</th>
+                      <th>Image</th>
+                      <th>Variant</th>
+                      <th>Price</th>
+                      <th>Quantity</th>
+                      <th>Sub Total</th>
+                      <th>Delivery Status</th>
+                      <th>Order Date</th>
+                      <th>Delivered Date</th>
+                      <th>Payment Method</th>
+                      <th>Payment Status</th>
+                      <th>Delivery Address</th>
+                      <th>Phone No.</th>
+                      <th>Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for item in orderitems %}
+                  <tr>
+                    <td> {{ item.order.order_id }} </td>
+                    <td> {{ item.order.user_id }} </td>
+                    <td> {{ item.order.user.first_name }} {{ item.order.user.last_name }} </td>
+                    <td> {{ item.product }} </td>
+                    <td> <img src="{{ item.product_variant.thumbnail.url }}" alt=""> </td>
+                    <td> {{ item.product_variant.color }} </td>
+                    <td> ${{ item.product.price }} </td>
+                    <td> {{ item.quantity }} </td> 
+                    <td> ${{ item.subtotal }} </td>
+                    <td class="{% if item.order_status == 'Pending' %}orange-text
+                    {% elif item.order_status == 'Dispatched' %}grey-text
+                    {% elif item.order_status == 'Shipped' %}black-text
+                    {% elif item.order_status == 'Delivered' %}green-text
+                    {% elif item.order_status == 'Cancelled' %}red-text
+                    {% elif item.order_status == 'Returned' %}blue-text
+                    {% endif %}">
+                    {{ item.order_status }}
+                    </td>
+                    <td>{{ item.order.orderdate }}</td>
+                    {% if item.deliverydate %}
+                    <td>{{ item.deliverydate }}</td>
+                    {% else %}
+                    <td>Not yet delivered</td>
+                    {% endif %}
+                    <td>{{ item.order.paymentmethod }}</td>
+                    <td class="{% if item.payment_status == 'Paid' %}green-text
+                        {% elif item.payment_status == 'Refunded' %}blue-text
+                        {% elif item.payment_status == 'Abandoned' %}black-text
+                        {% else %}orange-text
+                        {% endif %}"
+                    >{{ item.payment_status }}</td>
+                    <td><address>
+                        {{ item.order.orderaddress.house_or_building_name }},
+                        {{ item.order.orderaddress.street_address }},
+                        {{ item.order.orderaddress.city }},
+                        {{ item.order.orderaddress.district }},
+                        {{ item.order.orderaddress.pincode }},
+                        {{ item.order.orderaddress.state }}.
+                    </address></td>
+                    <td>{{ item.order.orderaddress.phone_no }}</td>
+                    <td>
+                        {% if not item.order_status == 'Cancelled' and not item.order_status == 'Returned' and not item.order_status == 'Delivered' %}
+                        <form action="{% url 'admin_order_and_payment:manage_order_status' item_id=item.id %}" method="get">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Change Delivery Status</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+          {% else %}
+          No orders found.
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

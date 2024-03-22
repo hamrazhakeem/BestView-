@@ -1,0 +1,72 @@
+{% extends 'adminshome/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Edit Category
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Edit Category</h4>
+                <form method="post" enctype="multipart/form-data" action="{% url 'adminproductmanagement:edit_category' pk=category.pk %}">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-success rounded">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+              <div>
+                <div class="d-flex justify-content-between">
+                    <h4 class="card-title">Manage Offers</h4>
+                    <a href="{% url 'adminproductmanagement:add_category_offer' category_id=category.id %}">
+                        <button type="button" class="btn btn-danger btn-icon-text">
+                            <i class="mdi mdi-plus btn-icon-prepend"></i> Add
+                        </button>
+                    </a>
+                </div>
+                {% if offers %}
+                <div class="table-responsive">
+                    
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Discount</th>
+                                    <th>Valid From</th>
+                                    <th>Valid To</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for offer in offers %}
+                                    <tr>
+                                        <td>{{ offer.discount_percentage }}%</td>
+                                        <td>{{ offer.valid_from }}</td>
+                                        <td>{{ offer.valid_to }}</td>
+                                        <td>
+                                          <a href="{% url 'adminproductmanagement:edit_category_offer' offer_id=offer.id %}"><button class="btn btn-primary mb-2">Edit</button></a>
+                                          <br>
+                                          <a href="{% url 'adminproductmanagement:delete_category_offer' offer_id=offer.id %}"><button class="btn btn-danger mb-2">Delete</button></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p>No Offers found for this Category.</p>
+                    
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

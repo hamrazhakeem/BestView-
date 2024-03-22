@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+{% load static %}
+<head>
+    <title>My Title</title>
+    <style type="text/css">
+        @page {
+            margin: 1cm;
+            @frame footer {
+                -pdf-frame-content: footerContent;
+                bottom: 0cm;
+                margin-left: 9cm;
+                margin-right: 9cm;
+                height: 1cm;
+            }
+        }
+
+        /* Center align text */
+        body, table, th, td {
+            text-align: center;
+        }
+
+        table {
+            border: 1px solid black;
+            margin: auto; /* Center align table */
+        }
+
+        th, td {
+            padding: 10px; /* Add padding for better appearance */
+        }
+
+        /* Adjust table layout */
+        .table-responsive {
+            overflow-x: auto; /* Add horizontal scroll if needed */
+        }
+
+        /* Adjust card layout */
+        .card {
+            width: 100%; /* Set card width to full */
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-body">
+            
+            <h4 class="card-title">BestView Sales Report</h4>
+            <img src="{% static 'user/images/logo/logo.webp' %}" alt="logo">
+            <div class="table-responsive">
+                <table id="sales-table" class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                            <th>Promotions</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in mylist %}
+                        <tr>
+                            <td>{{ item.product_name }}</td>
+                            <td>${{ item.price }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>${{ item.total_price }}</td>
+                            <td>{% if item.discounted_price %}${{ item.discounted_price }}{% else %}No discount{% endif %}</td>
+                            <td>${{ item.subtotal }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" style="font-weight:bold">Grand Total</td>
+                            <td>${{ grand_total }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

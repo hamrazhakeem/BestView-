@@ -1,0 +1,292 @@
+{% extends 'usershome/base.html' %}
+{% load static %}
+
+{% block title %}Best View - Eyewear Site in India{% endblock %}
+
+{% block content %}
+
+<!-- <style>
+    #productThumbnail {
+        width: 100%; /* Adjust the width as needed */
+        height: auto; /* Maintain aspect ratio */
+        max-width: 300px; /* Maximum width */
+        max-height: 300px; /* Maximum height */
+    }
+</style> -->
+
+<style>
+    .discount-box {
+        background-color: #f60d4f; /* Pink background color */
+        color: white; /* White text color */
+        padding: 5px 10px; /* Padding around the text */
+        border-radius: 5px; /* Rounded corners */
+    }
+    
+</style>
+
+<div class="shop-area shop-page-responsive pb-50">
+            <div class="container">
+                <div class="row flex-row-reverse">
+                    <div class="col-lg-9">
+                        <div class="shop-topbar-wrapper mb-40">
+                            <div class="shop-topbar-left">
+                            </div>
+                            <div class="sidebar-widget mb-40" data-aos="fade-up" data-aos-delay="200">
+                                <div class="search-wrap-2">
+                                    <form class="search-2-form" action="{% url 'shop' %}" method="GET">
+                                        <input name="q" placeholder="Search" type="text">
+                                        <button type="submit" class="button-search"><i class="ti-search"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="shop-bottom-area">
+                            <div class="tab-content jump">
+                                <div id="shop-1" class="tab-pane active">
+                                    <div class="row" id="filtered_products">
+                                        {% if not products %}
+                                            <div class="col-12">
+                                                <p>No Products Found.</p>
+                                            </div>
+                                        {% else %}
+                                        {% for product in products %}
+                                            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                                                <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200">
+                                                    <!-- Product card content -->
+                                                    <div class="product-img img-zoom mb-25">
+                                                        {% if product.product_offers.first %}
+                                                            <div class="product-badge badge-top badge-right badge-pink">
+                                                                <div class="discount-box">
+                                                                    <span>{{ product.product_offers.first.discount_percentage }}% Off</span>
+                                                                </div>
+                                                            </div>
+                                                        {% elif product.category.category_offers.first %}
+                                                            <div class="product-badge badge-top badge-right badge-pink">
+                                                                <div class="discount-box">
+                                                                    <span>{{ product.category.category_offers.first.discount_percentage }}% Off</span>
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                        <a href="{% url 'userproduct:product_details' pk=product.pk %}">
+                                                            {% if product.thumbnail %}
+                                                                <img src="{{ product.thumbnail.url }}" alt="" class="img-fluid" style="height: 300px; object-fit: contain; background-color: white;">
+                                                            {% else %}
+                                                                No Thumbnail Available
+                                                            {% endif %}
+                                                        </a>
+                                                        
+                                                        <div class="product-action-wrap product_data">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" class="prod_id" value="{{ product.id }}">
+                                                            <button class="product-action-btn-1 addToWishlist" title="Wishlist"><i class="pe-7s-like"></i></button>
+                                                        </div>  
+                                                    </div>
+                                                    <div class="product-content">
+                                                        <h3>{{ product.brand }}</h3>
+                                                        <h3><a href="{% url 'userproduct:product_details' pk=product.pk %}">{{ product.name }}</a></h3>
+                                                        <div class="product-price">
+                                                            {% if product.offer_price %}
+                                                                <span class="old-price">${{ product.price }}</span>
+                                                                <span class="new-price">${{ product.offer_price }}</span>
+                                                            {% else %}
+                                                                <span class="new-price">${{ product.price }}</span>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                    {% if products %}
+                                        <div class="pagination-style-1" data-aos="fade-up" data-aos-delay="50">
+                                            <ul>
+                                                {% if products.has_previous %}
+                                                    <li><a href="?page=1">&laquo;</a></li>
+                                                    <li><a href="?page={{ products.previous_page_number }}">{{ products.previous_page_number }}</a></li>
+                                                {% endif %}
+                                                <li><a class="active" href="?page={{ products.number }}">{{ products.number }}</a></li>
+                                                {% if products.has_next %}
+                                                    <li><a href="?page={{ products.next_page_number }}">{{ products.next_page_number }}</a></li>
+                                                    <li><a href="?page={{ products.paginator.num_pages }}">&raquo;</a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="sidebar-wrapper">
+                            
+                            {% if products %}
+                            <div class="sidebar-widget sidebar-widget-border mb-40 pb-35">
+                                <div class="sidebar-widget-title mb-25">
+                                    <h3>Categories</h3>
+                                </div>
+                                <div class="sidebar-list-style">
+                                    <ul style="list-style: none; padding: 0;">
+                                        {% for category in categories %}
+                                            <li style="display: inline-block; margin-right: 10px;">
+                                                <input class="form-check-input filter-checkbox" type="checkbox" data-filter="category" id="{{ category.id }}" name="categories" value="{{ category.id }}">
+                                                <label for="{{ category.id }}">{{ category.name }}</label>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="sidebar-widget sidebar-widget-border mb-40 pb-35">
+                                <div class="sidebar-widget-title mb-25">
+                                    <h3>Brands</h3>
+                                </div>
+                                <div class="sidebar-widget-color sidebar-list-style">
+                                    <ul style="list-style: none; padding: 0;">
+                                        {% for brand in brands %}
+                                            <li style="display: inline-block; margin-right: 10px;">
+                                                <input class="form-check-input filter-checkbox" type="checkbox" data-filter="brand" id="{{ brand.id }}" name="brands" value="{{ brand.id }}">
+                                                <label for="{{ brand.id }}">{{ brand.name }}</label>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="sidebar-widget sidebar-widget-border mb-40 pb-35">
+                                <div class="sidebar-widget-title mb-25">
+                                    <h3>Colors</h3>
+                                </div>
+                                <div class="sidebar-widget-color sidebar-list-style">
+                                    <ul style="list-style: none; padding: 0;">
+                                        {% for variant in variants %}
+                                            <li style="display: inline-block; margin-bottom: 10px;">
+                                                <input class="form-check-input filter-checkbox" type="checkbox" data-filter="variant" id="{{ variant.id }}" name="colors" value="{{ variant }}">
+                                                <label for="color_{{ variant }}">{{ variant }}</label>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Modal -->
+    <div class="modal fade quickview-modal-style" id="exampleModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close"><i class="ti-close"></i></a>
+                </div>
+                <div class="modal-body">
+                    <!-- Quick view content -->
+                    <h2 id="productBrand"></h2>
+                    <h4 id="productName"></h4>
+                    <img id="productThumbnail" src="" alt="Product Thumbnail">
+                    <div class="product-details-price">
+                        <span class="new-price">$<span id="productPrice"></span></span>
+                    </div>
+                    <p id="productDescription"></p>
+                    <!-- Additional product details and actions -->
+                    <div class="product-details-action-wrap">
+                        <div class="single-product-wishlist">
+                            <a title="Wishlist" href="#"><i class="pe-7s-like"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $('.addToWishlist').click(function (e) {
+        e.preventDefault();
+
+        var product_id = $(this).closest('.product_data').find('.prod_id').val();
+        var token = $('input[name=csrfmiddlewaretoken]').val();
+
+        $.ajax({
+            type: "POST",
+            url: "/add_to_wishlist/",
+            data: {
+                'product_id': product_id,
+                'csrfmiddlewaretoken': token
+            }, 
+            success: function (response) {
+                if (response.status === 'Product added to wishlist') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: response.status,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else if (response.status === 'Product already in wishlist') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: response.status,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else if (response.status === 'Login to continue') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: response.status,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function (){
+        $(".filter-checkbox").on("click", function(){
+            console.log('Checkbox been clicked');
+    
+            let filter_object = {}
+    
+            $(".filter-checkbox").each(function(){
+                let filter_value = $(this).val();
+                let filter_key = $(this).data("filter");
+
+                console.log('filter values',filter_key)
+    
+                if (!filter_object.hasOwnProperty(filter_key)) {
+                    filter_object[filter_key] = [];
+                }
+    
+                if ($(this).is(":checked")) {
+                    filter_object[filter_key].push(filter_value);
+                }
+            });
+    
+            console.log('filter object is:', filter_object);
+    
+            $.ajax({
+                url: '/filter_products/',
+                data: filter_object,
+                dataType: 'json',
+                beforeSend: function(){
+                    console.log('Trying to filter product...');
+                },
+                success: function(response){
+                    console.log(response);
+                    console.log('Data filtered successfully...');
+                    $('#filtered_products').html(response.data)
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    console.log('Error:', xhr.responseText);
+                }
+            });
+        });
+    });    
+</script>
+
+{% endblock %}

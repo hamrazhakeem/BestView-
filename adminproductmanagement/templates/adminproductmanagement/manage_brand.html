@@ -1,0 +1,55 @@
+{% extends 'adminshome/base.html' %}
+{% load static %}
+
+{% block title %}Manage Brand{% endblock %}
+
+{% block content %}
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div style="display: flex; justify-content: space-between;">
+          <h4 class="card-title">Manage Brand</h4>
+          <a href="{% url 'adminproductmanagement:unlisted_brands' %}"><button type="button" class="btn btn-icon-text" style="background-color: grey;">
+            Unlisted Brands </button></a>
+          <a href="{% url 'adminproductmanagement:add_brand' %}"><button type="button" class="btn btn-danger btn-icon-text">
+              <i class="mdi mdi-plus btn-icon-prepend"></i> Add </button></a>
+        </div>
+        <div class="table-responsive">
+          {% if brands %}
+          <table class="table table-bordered" style="background-color: #f2f2f2;">
+              <thead>
+                  <tr>
+                      <th> Name </th>
+                      <th> Image </th>
+                      <th> Action </th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for brand in brands %}
+                  <tr>
+                      <td> {{ brand.name }} </td>
+                      <td> <img src="{{ brand.image.url }}" alt="" style="width: 150px; height: auto;"> </td> <!-- Adjust the width as needed -->
+                      <td>
+                          <a href="{% url 'adminproductmanagement:edit_brand' pk=brand.pk %}" class="btn-link">
+                              <button type="button" class="btn btn-outline-secondary btn-icon-text custom-btn" style="background-color: grey;">Edit <i class="mdi mdi-file-check btn-icon-append"></i></button>
+                          </a>
+                          <a href="{% url 'adminproductmanagement:unlist_brand' pk=brand.pk %}" style="margin-bottom: 10px;">
+                            <button type="submit" class="btn btn-danger btn-icon-text" style="border: none; background-color: black;">Unlist <i class="fas fa-folder-minus"></i></button>
+                          </a>
+                      </td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+          {% else %}
+          No Brands Found.
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+{% endblock %}

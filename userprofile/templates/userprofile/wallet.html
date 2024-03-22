@@ -1,0 +1,52 @@
+{% extends 'usershome/base.html' %}
+{% load static %}
+{% block title %}Wallet{% endblock %}
+{% block content %}
+
+<div class="my-account-wrapper pb-100 pt-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- My Account Page Start -->
+                <div class="myaccount-page-wrapper">
+                    <!-- My Account Tab Menu Start -->
+                    <div class="row">
+                        <div class="col-lg-3 col-md-12">
+                            <div class="myaccount-tab-menu nav" role="tablist">
+                                <a href="{% url 'userprofile:profile' user_id=user.id %}">Dashboard</a>
+                                <a href="{% url 'userprofile:orders' %}">Orders</a>
+                                <a href="{% url 'userprofile:wallet' %}" class="active">Wallet</a>
+                                <a href="{% url 'userprofile:address' %}">Address</a>
+                                <a href="{% url 'userprofile:coupon' %}">Coupon</a>
+                                <a href="{% url 'signout' %}">Logout</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="your-order-area">
+                                <h3>Wallet</h3>
+                                <div class="your-order-wrap gray-bg-4">
+                                    <div class="your-order-info-wrap">
+                                        <div class="your-order-info order-total">
+                                            <ul>
+                                                <li>Balance <span>${{ wallet.balance }} </span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="payment-method text-center">
+                                        <a href="{% url 'userprofile:cash_deposit_page' %}"><button class="btn btn-success rounded"> Deposit <i class="fa fa-plus"></i></button></a>
+                                        <a href="{% url 'userprofile:cash_withdraw_page' %}"><button class="btn btn-danger rounded"> Withdraw <i class="fa fa-minus"></i></button></a>
+                                    </div>
+                                </div>
+                                <div class="Place-order btn-hover">
+                                    <a href="{% url 'userprofile:transaction_history' %}">Transaction History</a>
+                                </div>
+                            </div>
+                        </div> <!-- My Account Tab Content End -->
+                    </div>
+                </div> <!-- My Account Page End -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+<style>
+    .discount-box {
+        background-color: #f60d4f; /* Pink background color */
+        color: white; /* White text color */
+        padding: 5px 10px; /* Padding around the text */
+        border-radius: 5px; /* Rounded corners */
+    }
+</style>
+
+<div class="row">
+    {% if not products %}
+        <div class="col-12">
+            <p>No Products Found.</p>
+        </div>
+    {% else %}
+    {% for product in products %}
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+            <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200">
+                <!-- Product card content -->
+                <div class="product-img img-zoom mb-25">
+                    {% if product.product_offers.first %}
+                        <div class="product-badge badge-top badge-right badge-pink">
+                            <div class="discount-box">
+                                <span>{{ product.product_offers.first.discount_percentage }}% Off</span>
+                            </div>
+                        </div>
+                    {% elif product.category.category_offers.first %}
+                        <div class="product-badge badge-top badge-right badge-pink">
+                            <div class="discount-box">
+                                <span>{{ product.category.category_offers.first.discount_percentage }}% Off</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <a href="{% url 'userproduct:product_details' pk=product.pk %}">
+                        {% if product.thumbnail %}
+                            <img src="{{ product.thumbnail.url }}" alt="" class="img-fluid" style="height: 300px; object-fit: contain; background-color: white;">
+                        {% else %}
+                            No Thumbnail Available
+                        {% endif %}
+                    </a>
+                    
+                    <div class="product-action-wrap product_data">
+                        <input type="hidden" class="prod_id" value="{{ product.id }}">
+                        <button class="product-action-btn-1 addToWishlist" title="Wishlist"><i class="pe-7s-like"></i></button>
+                    </div>  
+                </div>
+                <div class="product-content">
+                    <h3>{{ product.brand }}</h3>
+                    <h3><a href="{% url 'userproduct:product_details' pk=product.pk %}">{{ product.name }}</a></h3>
+                    <div class="product-price">
+                        {% if product.offer_price %}
+                            <span class="old-price">${{ product.price }}</span>
+                            <span class="new-price">${{ product.offer_price }}</span>
+                        {% else %}
+                            <span class="new-price">${{ product.price }}</span> 
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% endif %}
+</div>

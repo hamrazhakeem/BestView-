@@ -1,0 +1,78 @@
+{% extends 'usershome/base.html' %}
+{% load static %}
+{% block title %}Coupon{% endblock %}
+{% block content %}
+
+<style>
+    .table-container {
+        overflow-x: auto; /* Enable horizontal scrolling */
+        max-width: 100%; /* Limit the maximum width of the table */
+    }
+</style>
+
+<!-- .your-order-wrap table td {
+    min-width:auto; /* Set a minimum width for table cells */
+    font-size: 14px; /* Adjust font size for readability */
+} -->
+
+<div class="my-account-wrapper pb-100 pt-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- My Account Page Start -->
+                <div class="myaccount-page-wrapper">
+                    <!-- My Account Tab Menu Start -->
+                    <div class="row">
+                        <div class="col-lg-3 col-md-12">
+                            <div class="myaccount-tab-menu nav" role="tablist">
+                                <a href="{% url 'userprofile:profile' user_id=user.id %}">Dashboard</a>
+                                <a href="{% url 'userprofile:orders' %}">Orders</a>
+                                <a href="{% url 'userprofile:wallet' %}">Wallet</a>
+                                <a href="{% url 'userprofile:address' %}">Address</a>
+                                <a href="{% url 'userprofile:coupon' %}" class="active">Coupon</a>
+                                <a href="{% url 'signout' %}">Logout</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="your-order-area">
+                                <h3>Coupons</h3>
+                                <div class="your-order-wrap gray-bg-4 table-container">
+                                    {% if coupons %}
+                                    <table class="table table-bordered table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Minimum Amount</th>
+                                                <th>Discount Percentage</th>
+                                                <th>Valid From</th>
+                                                <th>Valid To</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for coupon in coupons %}
+                                            <tr>
+                                                <td>{{ coupon.code }}</td>
+                                                <td>${{ coupon.minimum_amount }}</td>
+                                                <td>{{ coupon.discount_percentage }}%</td>
+                                                <td>{{ coupon.valid_from }}</td>
+                                                <td>{{ coupon.valid_to }}</td>
+                                                <td>{{ coupon.description }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    {% else %}
+                                    No Coupons Found.
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div> <!-- My Account Tab Content End -->
+                    </div>
+                </div> <!-- My Account Page End -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

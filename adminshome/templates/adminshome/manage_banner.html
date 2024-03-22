@@ -1,0 +1,53 @@
+{% extends 'adminshome/base.html' %}
+{% load static %}
+
+{% block title %}Manage Banner{% endblock %}
+
+{% block content %}
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div style="display: flex; justify-content: space-between;">
+          <h4 class="card-title">Manage Banner</h4>
+          <a href="{% url 'adminshome:add_banner' %}"><button type="button" class="btn btn-danger btn-icon-text">
+              <i class="mdi mdi-plus btn-icon-prepend"></i> Add </button></a>
+        </div>
+        <div class="table-responsive">
+          {% if banners %}
+          <table class="table table-bordered" style="background-color: #f2f2f2;">
+              <thead>
+                  <tr>
+                      <th> Name </th>
+                      <th> Image </th>
+                      <th> Action </th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for banner in banners %}
+                  <tr>
+                      <td> {{ banner.name }} </td>
+                      <td> <img src="{{ banner.image.url }}" alt="" style="width: 150px; height: auto;"> </td>
+                      <td>
+                          <a href="{% url 'adminshome:edit_banner' pk=banner.pk %}" class="btn-link">
+                              <button type="button" class="btn btn-outline-secondary btn-icon-text custom-btn" style="background-color: grey;">Edit <i class="mdi mdi-file-check btn-icon-append"></i></button>
+                          </a>
+                          <a href="{% url 'adminshome:delete_banner' pk=banner.pk %}">
+                            <button type="submit" class="btn btn-danger btn-icon-text">Delete <i class="mdi mdi-delete btn-icon-append"></i></button>
+                          </a>
+                      </td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+          {% else %}
+          No Banners Found.
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+{% endblock %}

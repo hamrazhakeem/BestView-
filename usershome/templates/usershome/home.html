@@ -1,0 +1,239 @@
+{% extends 'usershome/base.html' %}
+{% load static %}
+
+{% block title %}Best View - Eyewear Site in India{% endblock %}
+
+{% block content %}
+<style>
+    #productThumbnail {
+        width: 100%; /* Adjust the width as needed */
+        height: auto; /* Maintain aspect ratio */
+        max-width: 300px; /* Maximum width */
+        max-height: 300px; /* Maximum height */
+    }
+</style>
+
+<style>
+    .discount-box {
+        background-color: #f60d4f; /* Pink background color */
+        color: white; /* White text color */
+        padding: 5px 10px; /* Padding around the text */
+        border-radius: 5px; /* Rounded corners */
+    }
+    .intro-section.slider-height-1.slider-content-center.bg-img.single-animation-wrap.slider-bg-color-2 {
+        background-size: cover; /* Ensures the background image covers the entire container */
+        background-repeat: no-repeat; /* Prevents the background image from repeating */
+        background-position: center center; /* Centers the background image */
+    }
+    @media (max-width: 768px) {
+        .intro-section.slider-height-1.slider-content-center.bg-img.single-animation-wrap.slider-bg-color-2 {
+            height: 300px; /* Adjust the height for smaller screens */
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .intro-section.slider-height-1.slider-content-center.bg-img.single-animation-wrap.slider-bg-color-2 {
+            height: 200px; /* Adjust the height for even smaller screens */
+        }
+    }
+</style>
+
+<div class="slider-area">
+    <div class="slider-active swiper-container">
+        <div class="swiper-wrapper">
+            {% for banner in banners %}
+                <div class="swiper-slide">
+                    <div class="intro-section slider-height-1 slider-content-center bg-img single-animation-wrap slider-bg-color-2" style="background-image: url('{{ banner.image.url }}'); position: relative;">
+                        <!-- <div class="slider-btn-2 btn-hover" style="position: absolute; bottom: 10px; left: 10px;">
+                            <a href="product-details.html" class="btn hover-border-radius theme-color animated">
+                                Shop Now
+                            </a>
+                        </div> -->
+                        <!-- HTML code -->
+                        <div class="home-slider-prev2 main-slider-nav2"><i class="fa fa-angle-left" style="color: grey;"></i></div>
+                        <div class="home-slider-next2 main-slider-nav2"><i class="fa fa-angle-right" style="color: grey;"></i></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<div class="category-area bg-gray-4 pt-95 pb-100">
+    <div class="container">
+        <div class="section-title-2 st-border-center text-center mb-75" data-aos="fade-up" data-aos-delay="200">
+            <h2>Products Category</h2>
+        </div>
+        <div class="category-slider-active-2 swiper-container">
+            <div class="swiper-wrapper">
+                {% for category in categories %}
+                    <div class="swiper-slide">
+                        <div class="single-category-wrap-2 text-center" data-aos="fade-up" data-aos-delay="100">
+                            <div class="category-img-2">
+                                <a href="{% url 'shop' %}?category={{ category.id }}">
+                                    <img class="category-normal-img" src="{{ category.image.url }}" alt="" class="img-fluid" style="height: 200px; object-fit: contain; background-color: white;">
+                                    <img class="category-hover-img" src="{{ category.image.url }}" alt="icon" class="img-fluid" style="height: 200px; object-fit: contain; background-color: white;">
+                                </a>
+                            </div>
+                            
+                            <div class="category-content-2 category-content-2-black">
+                                <h4><a href="{% url 'shop' %}?category={{ category.id }}">{{ category.name }}</a></h4>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="product-area pt-95 pb-60">
+    <div class="container">
+        <div class="section-title-tab-wrap mb-75" data-aos="fade-up" data-aos-delay="200">
+            <div class="section-title-2">
+                <h2>Top Products</h2>
+            </div>
+            <!-- <div class="tab-style-1 nav">
+                <a class="active" href="#pro-1" data-bs-toggle="tab">New Arrivals </a>
+                <a href="#pro-2" data-bs-toggle="tab" class=""> Best Sellers </a>
+                <a href="#pro-3" data-bs-toggle="tab" class=""> Sale Items </a>
+            </div> -->
+        </div>
+        <div class="tab-content jump">
+            <div id="pro-1" class="tab-pane active">
+                <div class="row">
+                    {% for product in products %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                        <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200">
+                            <!-- Product card content -->
+                            <div class="product-img img-zoom mb-25">
+                                {% if product.product_offers.first %}
+                                    <div class="product-badge badge-top badge-right badge-pink">
+                                        <div class="discount-box">
+                                            <span>{{ product.product_offers.first.discount_percentage }}% Off</span>
+                                        </div>
+                                    </div>
+                                {% elif product.category.category_offers.first %}
+                                    <div class="product-badge badge-top badge-right badge-pink">
+                                        <div class="discount-box">
+                                            <span>{{ product.category.category_offers.first.discount_percentage }}% Off</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <a href="{% url 'userproduct:product_details' pk=product.pk %}">
+                                    <img src="{% if product.thumbnail %}{{ product.thumbnail.url }}{% else %}{% static 'path_to_default_thumbnail.jpg' %}{% endif %}" alt="Product Thumbnail" class="img-fluid" style="height: 300px; object-fit: contain; background-color: white;">
+                                </a>
+                                
+                                <div class="product-action-wrap product_data">
+                                    {% csrf_token %}
+                                    <input type="hidden" class="prod_id" value="{{ product.id }}">
+                                    <button class="product-action-btn-1 addToWishlist" title="Wishlist"><i class="pe-7s-like"></i></button>
+                                </div>  
+                            </div>
+                            <div class="product-content">
+                                <h3>{{ product.brand }}</h3>
+                                <h3><a href="{% url 'userproduct:product_details' pk=product.pk %}">{{ product.name }}</a></h3>
+                                <div class="product-price">
+                                    {% if product.offer_price %}
+                                        <span class="old-price">${{ product.price }}</span>
+                                        <span class="new-price">${{ product.offer_price }}</span>
+                                    {% else %}
+                                        <span class="new-price">${{ product.price }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="brand-logo-area pb-95">
+    <div class="container">
+        <h2 class="partner-brands-heading text-center" data-aos="fade-up" data-aos-delay="200" style="font-weight: bold;">Partner Brands</h2>
+        <div class="brand-logo-active swiper-container">
+            <div class="swiper-wrapper">
+                {% for brand in brands %}
+                <div class="swiper-slide">
+                    <div class="single-brand-logo" data-aos="fade-up" data-aos-delay="200">
+                        <a><img src="{{ brand.image.url }}" alt=""></a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Product Modal start -->
+<div class="modal fade quickview-modal-style" id="exampleModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close"><i class="ti-close"></i></a>
+            </div>
+            <div class="modal-body">
+                <!-- Quick view content here -->
+                <h2 id="productBrand"></h2>
+                <h4 id="productName"></h4>
+                <img id="productThumbnail" src="" alt="Product Thumbnail">
+                <div class="product-details-price">
+                    <span class="new-price">$<span id="productPrice"></span></span>
+                </div>
+                <p id="productDescription"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Product Modal end -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $('.addToWishlist').click(function (e) {
+        e.preventDefault();
+
+        var product_id = $(this).closest('.product_data').find('.prod_id').val();
+        var token = $('input[name=csrfmiddlewaretoken]').val();
+
+        $.ajax({
+            type: "POST",
+            url: "/add_to_wishlist/",
+            data: {
+                'product_id': product_id,
+                'csrfmiddlewaretoken': token
+            }, 
+            success: function (response) {
+                if (response.status === 'Product added to wishlist') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: response.status,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else if (response.status === 'Product already in wishlist') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: response.status,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else if (response.status === 'Login to continue') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: response.status,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }
+        });
+    });
+</script>
+
+{% endblock %}

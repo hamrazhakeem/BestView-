@@ -1,0 +1,273 @@
+{% extends 'usershome/base.html' %}
+{% load static %}
+
+{% block title %}Best View - Eyewear Site in India{% endblock %}
+
+{% block content %}
+
+<style>
+    .percentage-box {
+        background-color: #f60d4f; /* Pink background color */
+        color: white; /* White text color */
+        padding: 5px 10px; /* Padding around the text */
+        border-radius: 5px; /* Rounded corners */
+        display: inline-block; /* Make the box inline to adjust its width */
+        max-width: 100px; /* Set a maximum width for the box */
+        overflow: hidden; /* Hide overflow content */
+        text-overflow: ellipsis; /* Show ellipsis for overflow content */
+        white-space: nowrap; /* Prevent wrapping of text */
+    }   
+</style>
+
+<div class="product-details-area pb-100 pt-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="product-details-img-wrap product-details-vertical-wrap" data-aos="fade-up" data-aos-delay="200">
+                    <div class="product-details-small-img-wrap">
+                        <div class="swiper-container product-details-small-img-slider-1 pd-small-img-style">
+                            <div class="swiper-wrapper">
+                                {% for variant in productvariants %}
+                                    {% for image in all_variant_images %}
+                                        <div class="swiper-slide">
+                                            <div class="product-details-small-img variant-image">
+                                                <img src="{{ image.image.url }}" alt="Product Thumbnail">
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination"></div>
+                        </div>
+                        <!-- <div class="pd-prev pd-nav-style"> <i class="ti-angle-up"></i></div>
+                        <div class="pd-next pd-nav-style"> <i class="ti-angle-down"></i></div> -->
+                    </div>
+                    
+                    <div class="swiper-container product-details-big-img-slider-1 pd-big-img-style">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="easyzoom-style">
+                                    <div class="easyzoom easyzoom--overlay" id="big-image-section">
+                                        <a href="{{ product.thumbnail.url }}"  id="big-image-link">
+                                            <img src="{{ product.thumbnail.url }}" id="big-image" alt="">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="product-details-content" data-aos="fade-up" data-aos-delay="400">
+                    <h1>{{ product.brand }}</h1>
+                    <h2>{{ product.name }}</h2>
+                    <div class="product-details-price">
+                        <!-- <span class="old-price">$25.89 </span> -->
+                        {% if product.offer_price %}
+                            <span class="old-price">${{ product.price }}</span>
+                            <span class="new-price">${{ product.offer_price }}</span>
+                        {% else %}
+                            <span class="new-price">${{ product.price }}</span>
+                        {% endif %}
+                        <div class="product-details-review mt-3">
+                            <div class="product-rating">
+                                <i class=" ti-star"></i>
+                                <i class=" ti-star"></i>
+                                <i class=" ti-star"></i>
+                                <i class=" ti-star"></i>
+                                <i class=" ti-star"></i>
+                            </div>
+                            <span>27,468 Ratings</span>
+                        </div>
+                        {% if product.product_offers.first %}
+                            <div class="product-badge badge-top badge-right badge-pink mt-3">
+                                <div class="percentage-box">
+                                    <span>{{ product.product_offers.first.discount_percentage }}% Off</span>
+                                </div>
+                            </div>
+                        {% elif product.category.category_offers.first %}
+                            <div class="product-badge badge-top badge-right badge-pink mt-3">
+                                <div class="percentage-box">
+                                    <span>{{ product.category.category_offers.first.discount_percentage }}% Off</span>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>                                     
+                    <div class="product-color product-color-active product-details-color">
+                        <span>Color:</span>
+                        {% for productvariant in productvariants %}
+                        <div class="product-variant" style="display: inline-block; margin-right: 10%;" data-variant-id="{{ productvariant.id }}">
+                            <img src="{{ productvariant.thumbnail.url }}" alt="{{ productvariant.color }}" style="max-width: 50%; height: auto;">
+                            <h6>{{ productvariant.color }}</h6>
+                                
+                                {% if productvariant.quantity <= 0 %}
+                                <h5 class="ml-5 text-danger">
+                                    Out Of Stock
+                                </h5>
+                                {% elif productvariant.quantity <= 5 %}
+                                <h5 class="ml-5 text-warning">
+                                    Limited Stock
+                                </h5>
+                                {% endif %}
+                                
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="product-details-action-wrap">
+                        <form method="POST" action="{% url 'userproduct:add_to_cart' %}" >
+                            {% csrf_token %}
+                            <label for="variant-select">Select Variant:</label>
+                            <select name="variant" id="variant-select">
+                                {% for variant in productvariants %}
+                                    <option value="{{ variant.id }}">{{ variant.color }}</option>
+                                {% endfor %}
+                            </select>
+                            <button class="mt-3" type="submit" style="background-color: #fd7e14; border: none; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 14px; border-radius: 5px; cursor: pointer;" onmouseover="this.style.backgroundColor='#000'; this.style.color='#fff';" onmouseout="this.style.backgroundColor='#fd7e14'; this.style.color='#fff';">Add to cart</button>
+                        </form>
+                        <div class="product_data">
+                            <input type="hidden" class="prod_id" value="{{ product.id }}">
+                            <button class="addToWishlist" style="background-color:#000; border: none; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 14px; border-radius: 5px; cursor: pointer; margin-top: 45%;" onmouseover="this.style.backgroundColor='#fd7e14'; this.style.color='white';" onmouseout="this.style.backgroundColor='#000'; this.style.color='#fff';">Add to Wishlist
+                            </button>
+                        </div>                                            
+                    </div>
+                    <div class="product-details-meta">
+                        <ul>
+                            <!-- <li><span class="title">SKU:</span> Ch-256xl</li> -->
+                            <li><span class="title">Category: {{ product.category }} </span>
+                            </li>
+                            <li><span class="title">Type: {{ product.type }} </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="description-review-area pb-85">
+    <div class="container">
+        <div class="description-review-topbar nav" data-aos="fade-up" data-aos-delay="200">
+            <a class="active" data-bs-toggle="tab" href="#des-details1"> Description </a>
+            <a data-bs-toggle="tab" href="#des-details2" class=""> Information </a>
+        </div>
+        <div class="tab-content">
+            <div id="des-details1" class="tab-pane active">
+                <div class="product-description-content text-center">
+                    <p data-aos="fade-up" data-aos-delay="200">{{ product.description }}</p>
+                </div>
+            </div>
+            <div id="des-details2" class="tab-pane">
+                <div class="specification-wrap table-responsive">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="width1">Brand</td>
+                                <td>{{ product.brand }}</td>
+                            </tr>
+                            <tr>
+                                <td class="width1">Color</td>
+                                
+                                <td>{% for productvariant in productvariants %}{{ productvariant.color }}, {% endfor %}</td>
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var variantImages = document.querySelectorAll('.product-variant img');
+        
+        variantImages.forEach(function(img) {
+            img.addEventListener('click', function(event) {
+                event.preventDefault(); 
+                
+                var imageUrl = this.getAttribute('src');
+                
+                var bigImage = document.getElementById('big-image');
+                bigImage.setAttribute('src', imageUrl);
+                
+                var ez = new EasyZoom(document.getElementById('big-image-section'));
+                ez.swap(imageUrl, imageUrl);
+            });
+        });
+    });
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var variantImages = document.querySelectorAll('.variant-image');
+    
+        variantImages.forEach(function(img) {
+            img.addEventListener('click', function(event) {
+                event.preventDefault();
+                var imageUrl = this.querySelector('img').getAttribute('src');
+    
+                var bigImageLink = document.getElementById('big-image-link');
+                var bigImage = document.getElementById('big-image');
+    
+                bigImageLink.setAttribute('href', imageUrl);
+                bigImage.setAttribute('src', imageUrl);
+    
+                var ez = new EasyZoom(document.getElementById('big-image-section'));
+                ez.swap(imageUrl, imageUrl);
+            });
+        });
+    });    
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $('.addToWishlist').click(function (e) {
+        e.preventDefault();
+
+        var product_id = $(this).closest('.product_data').find('.prod_id').val();
+        var token = $('input[name=csrfmiddlewaretoken]').val();
+
+        $.ajax({
+            type: "POST",
+            url: "/add_to_wishlist/",
+            data: {
+                'product_id': product_id,
+                'csrfmiddlewaretoken': token
+            }, 
+            success: function (response) {
+                if (response.status === 'Product added to wishlist') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: response.status,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else if (response.status === 'Product already in wishlist') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: response.status,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else if (response.status === 'Login to continue') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: response.status,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }
+        });
+    });
+</script>
+
+
+{% endblock %}

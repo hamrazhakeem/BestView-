@@ -1,0 +1,28 @@
+{% extends 'adminshome/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Add Variant{% endblock %}
+
+{% block content %}
+
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Add Variant</h4>
+        <form method="post" id="image-form" enctype="multipart/form-data" action="">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <label for="image_field" class="my-3">Images*</label>
+            <br>
+            <input type="file" name="images" accept="image/*" multiple class="image_field mb-5">
+            <br>
+            <button type="submit" class="btn btn-success rounded" >Add</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  
+
+{% endblock %}

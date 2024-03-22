@@ -1,0 +1,66 @@
+{% extends 'usershome/base.html' %}
+{% load static %}
+
+{% block title %}Delivery Information{% endblock %}
+
+{% block content %}
+
+
+<h1 class="text-center mt-5">Delivery Information</h1>
+
+<div class="service-area mt-5 mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="service-wrap-2 text-center mb-30">
+                    <div class="service-img-2">
+                        <img src="{% static 'user/images/icon-img/car.png' %}" alt="">
+                    </div>
+                    <div class="service-content-2">
+                        <h3>Fast and Reliable Shipping</h3>
+                        <p>Experience seamless delivery services with our fast and reliable shipping options.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="service-wrap-2 text-center mb-30">
+                    <div class="service-img-2">
+                        <img src="{% static 'user/images/icon-img/time.png' %}" alt="">
+                    </div>
+                    <div class="service-content-2">
+                        <h3>24/7 Customer Support</h3>
+                        <p>Our dedicated support team is available around the clock to assist you with any queries or concerns.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="service-wrap-2 text-center mb-30">
+                    <div class="service-img-2">
+                        <img src="{% static 'user/images/icon-img/dollar.png' %}" alt="">
+                    </div>
+                    <div class="service-content-2">
+                        <h3>Hassle-Free Money Return</h3>
+                        <p>Shop with confidence knowing that we offer hassle-free returns and refunds.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="service-wrap-2 text-center mb-30">
+                    <div class="service-img-2">
+                        <img src="{% static 'user/images/icon-img/discount.png' %}" alt="">
+                    </div>
+                    <div class="service-content-2">
+                        <h3>Exclusive Order Discounts</h3>
+                        <p>Unlock exclusive discounts and offers on your orders to maximize savings.</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}

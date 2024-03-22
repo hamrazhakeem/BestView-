@@ -1,0 +1,62 @@
+{% extends 'adminshome/base.html' %}
+{% load static %}
+
+{% block title %}Unlisted Coupons{% endblock %}
+
+{% block content %}
+
+<div class="content-wrapper" style="background-color: #191c24;">
+    <div style="display: flex; justify-content: space-between;">
+        <h4 class="card-title">Unlisted Coupons</h4>
+        <a href="{% url 'adminshome:manage_coupon' %}"><button type="button" class="btn btn-icon-text" style="background-color: grey;">
+            Listed Coupons </button></a>
+      </div>
+    <div class="row mt-5">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              {% if coupons %}
+              <table class="table table-bordered" style="background-color: white;">
+                <thead>
+                  <tr>
+                    <th>Code</th>
+                    <th>Minimum Amount</th>
+                    <th>Discount Amount</th>
+                    <th>Valid From</th>
+                    <th>Valid To</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for coupon in coupons %}
+                  <tr>
+                    <td>{{ coupon.code }}</td>
+                    <td>${{ coupon.minimum_amount }}</td>
+                    <td>{{ coupon.discount_percentage }}%</td>
+                    <td>{{ coupon.valid_from }}</td>
+                    <td>{{ coupon.valid_to }}</td>
+                    <td>{{ coupon.description }}</td>
+                    <td>
+                        <a href="{% url 'adminshome:list_coupon' coupon_id=coupon.id %}">
+                            <button class="btn btn-secondary" style="border: transparent; background-color:grey; color:white;">List</button>
+                        </a>
+                    </td>
+                  </tr>                 
+                    {% endfor %}      
+                </tbody>
+              </table>
+              {% else %}
+              No Coupons Found
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <!-- content-wrapper ends -->
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'usershome/base.html' %}
+{% load static %}
+
+{% block title %}Order Address{% endblock %}
+
+{% block content %}
+
+<div class="container mb-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-8">
+            <div class="checkout-details">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="p-3">
+                            <h2 class="mb-0">Shipping Address</h2>
+                            <div class="my-3 border-bottom"></div>
+                            <div class="form-body">
+                                <div class="row g-3">
+                                        <div class="card shadow-none border mb-0 p-2 bg-light">
+                                                <div class="card-body">
+                                                    <div class="d-flex d-flex justify-content-between">
+                                                        <h5 class="mb-4">Choose an address</h5>	
+                                                        <a href="{% url 'userprofile:add_address' address_type='checkout' %}">
+                                                            <button class="btn text-white" style="background-color: #e97730; color: white; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='black'" onmouseout="this.style.backgroundColor='#e97730'">Add</button>
+                                                        </a>                                                        
+                                                    </div>
+                                                    <form method="post" action="{% url 'user_order_and_payment:payment_method' %}">
+                                                        {% csrf_token %}
+                                                    <div class="row">
+                                                        {% for address in addresses %}
+                                                        <div class="col-12 col-lg-5 border m-2 pt-2 bg-white">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="selected_address_id" id="address{{ address.id }}" value="{{ address.id }}" required>
+                                                                    <address>
+                                                                        {{ address.house_or_building_name }}<br>
+                                                                        {{ address.street_address }}<br>
+                                                                        {{ address.city }}<br>
+                                                                        {{ address.district }}<br>
+                                                                        {{ address.pincode }}<br>
+                                                                        {{ address.state }}<br>
+                                                                        {{ address.phone_no }}
+                                                                    </address>
+                                                            </div>
+                                                        </div>
+                                                        {% endfor %}
+                                                        
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    <div class="col-md-6">
+                                        <div class="d-grid">	
+                                            <a href="{% url 'userproduct:cart' cart_id=cart.id %}" class="btn btn-ecomm" style="background-color: black; color: white; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#e97730'" onmouseout="this.style.backgroundColor='black'"><i class='bx bx-chevron-left'></i>Back to Cart</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-grid">
+                                            {% if addresses %}	
+                                            <button type="submit" class="btn btn-ecomm" style="background-color: #e97730; color: white; transition: background-color 0.3s ease; font-weight:bold;" onmouseover="this.style.backgroundColor='black'" onmouseout="this.style.backgroundColor='#e97730'">Proceed to Checkout<i class='bx bx-chevron-right'></i></button>
+                                            {% endif %}
+                                        </div>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,171 @@
+{% extends 'usershome/base.html' %}
+{% load static %}
+{% block title %}Orders{% endblock %}
+{% block content %}
+
+<style>
+    .table-container {
+        overflow-x: auto; /* Enable horizontal scrolling */
+        max-width: 100%; /* Limit the maximum width of the table */
+    }
+    .product-thumbnail {
+        max-width: 100%; /* Adjust the maximum width for the product thumbnail */
+        height: auto; /* Maintain aspect ratio */
+    }
+    .orange-text {
+        color: orange;
+    }
+    
+    .grey-text {
+        color: grey;
+    }
+    
+    .blue-text {
+        color: blue; /* Adjust the color as needed */
+    }
+
+    .green-text {
+        color: green;
+    }
+    
+    .red-text {
+        color: red;
+    }
+    .blue-text{
+        color: blue;
+    }
+    .black-text{
+        color: black;
+    }
+</style>
+
+<div class="my-account-wrapper pb-100 pt-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- My Account Page Start -->
+                <div class="myaccount-page-wrapper">
+                    <!-- My Account Tab Menu Start -->
+                    <div class="row">
+                        <div class="col-lg-3 col-md-12">
+                            <div class="myaccount-tab-menu nav" role="tablist">
+                                <a href="{% url 'userprofile:profile' user_id=user.id %}">Dashboard</a>
+                                <a href="{% url 'userprofile:orders' %}" class="active">Orders</a>
+                                <a href="{% url 'userprofile:wallet' %}">Wallet</a>
+                                <a href="{% url 'userprofile:address' %}">Address</a>
+                                <a href="{% url 'userprofile:coupon' %}">Coupon</a>
+                                <a href="{% url 'signout' %}">Logout</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 col-md-12" style="margin-top: .3%;">
+                            <div class="tab-content" id="myaccountContent">
+                                <h1 style="display: inline-block;">Orders</h1>                   
+                                <div class="table-container"> <!-- Add a container for the table to enable horizontal scrolling -->
+                                    {% if orders %}
+                                    <table class="table table-bordered table-responsive">
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Image</th>
+                                            <th>Product</th>
+                                            <th>Variant</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Total Price</th>
+                                            <th>Promotions</th>
+                                            <th>Grand Total</th>
+                                            <th>Delivery Status</th>
+                                            <th>Order Date</th>
+                                            <th>Delivered Date</th>
+                                            <th>Payment Method</th>
+                                            <th>Payment Status</th>
+                                            <th>Delivery Address</th>
+                                            <th>Phone No.</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        {% for item in orderitems %}
+                                        <tr>
+                                            <td>{{ item.order.order_id }}</td>
+                                            <td><img class="product-thumbnail" src="{{ item.product_variant.thumbnail.url }}" alt="Product Variant Thumbnail"></td>
+                                            <td><a href="{% url 'userproduct:product_details' pk=item.product.pk %}">{{ item.product }}</a></td>
+                                            <td>{{ item.product_variant.color }}</td>
+                                            <td>${{ item.product.price }}</td>
+                                            <td>{{ item.quantity }}</td>
+                                            <td>${{ item.total_price }}</td>
+                                            {% if item.discounted %}
+                                            <td>${{ item.discounted }}</td> 
+                                            {% else %}
+                                            <td>No Discount</td>
+                                            {% endif %}
+                                            <td>${{ item.subtotal }}</td>
+                                            <td class="{% if item.order_status == 'Pending' %}orange-text
+                                                {% elif item.order_status == 'Dispatched' %}grey-text
+                                                {% elif item.order_status == 'Shipped' %}black-text
+                                                {% elif item.order_status == 'Delivered' %}green-text
+                                                {% elif item.order_status == 'Cancelled' %}red-text
+                                                {% elif item.order_status == 'Returned' %}blue-text
+                                                {% endif %}">
+                                                {{ item.order_status }}
+                                            </td>
+                                            <td>{{ item.order.orderdate }}</td>
+                                            {% if item.deliverydate %}
+                                            <td>{{ item.deliverydate }}</td>
+                                            {% else %}
+                                            <td>Not Delivered</td>
+                                            {% endif %}
+                                            <td>{{ item.order.paymentmethod }}</td>
+                                            <td class="{% if item.payment_status == 'Paid' %}green-text
+                                                {% elif item.payment_status == 'Refunded' %}blue-text
+                                                {% elif item.payment_status == 'Abandoned' %}black-text
+                                                {% else %}orange-text
+                                                {% endif %}"
+                                            >{{ item.payment_status }}</td>
+                                            <td><address>
+                                                {{ item.order.orderaddress.house_or_building_name }},
+                                                {{ item.order.orderaddress.street_address }},
+                                                {{ item.order.orderaddress.city }},
+                                                {{ item.order.orderaddress.district }},
+                                                {{ item.order.orderaddress.pincode }},
+                                                {{ item.order.orderaddress.state }}.
+                                            </address></td>
+                                            <td>{{ item.order.orderaddress.phone_no }}</td>
+                                            <td>{% if not item.order_status == 'Cancelled' and not item.order_status == 'Delivered' and not item.order_status == 'Returned' %}<a href="{% url 'userprofile:cancel_order' item_id=item.id %}"><button class="btn btn-danger">Cancel</button></a>{% endif %}  {% if item.order_status == 'Delivered' %}<a href="{% url 'userprofile:return_order' item_id=item.id %}"><button class="btn btn-danger" style="background-color: blue; border:none;">Return</button></a>
+                                                <a href="{% url 'userprofile:download_invoice' item_id=item.id %}"><button class="btn btn-success mt-3" style="border:none;">Inovice</button></a>
+                                                {% endif %}
+                                        </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+
+                                                                        
+                                    {% else %}
+                                    You have no Orders.
+                                    {% endif %}
+                                </div>  
+                                {% if orders %}
+                                <div class="pagination-style-1 mt-3">
+                                    <ul>
+                                        {% for i in orderitems.paginator.page_range %}
+                                            {% if orderitems.number == i %}
+                                                <li><a class="active" href="#">{{ i }}</a></li>
+                                            {% else %}
+                                                <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div> 
+                                {% endif %}                            
+                            </div>
+                            <!-- {% if orders %}
+                            <div class="mt-5">
+                            <p>*The payment status of the product is initially determined upon order placement and subsequently updated upon successful delivery to the customer. However, it remains unchanged in the event of a return or cancellation by the customer.</p>
+                            </div>
+                            {% endif %} -->
+                        </div>                       
+                    </div>
+                </div> <!-- My Account Page End -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

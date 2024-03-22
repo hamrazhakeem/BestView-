@@ -1,0 +1,65 @@
+{% extends 'usershome/base.html' %}
+{% load static %}
+{% block title %}Transaction History{% endblock %}
+{% block content %}
+
+<div class="my-account-wrapper pb-100 pt-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- My Account Page Start -->
+                <div class="myaccount-page-wrapper">
+                    <!-- My Account Tab Menu Start -->
+                    <div class="row">
+                        <div class="col-lg-3 col-md-12">
+                            <div class="myaccount-tab-menu nav" role="tablist">
+                                <a href="{% url 'userprofile:profile' user_id=user.id %}">Dashboard</a>
+                                <a href="{% url 'userprofile:orders' %}">Orders</a>
+                                <a href="{% url 'userprofile:wallet' %}" class="active">Wallet</a>
+                                <a href="{% url 'userprofile:address' %}">Address</a>
+                                <a href="{% url 'userprofile:coupon' %}">Coupon</a>
+                                <a href="{% url 'signout' %}">Logout</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="your-order-area">
+                                <h3>Transaction History</h3>
+                                <div class="your-order-wrap gray-bg-4">
+                                    {% if transactions %}
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>Type</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for t in transactions %}
+                                            <tr>
+                                                <td>{{ t.date }}</td>
+                                                <td>${{ t.amount }}</td>
+                                                <td style="color: {% if t.type == 'Credit' %}green{% else %}red{% endif %};">{{ t.type }}</td>
+                                                
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    {% else %}
+                                    No Transactions Found.
+                                    {% endif %}
+                                </div>
+                                <div class="Place-order btn-hover">
+                                    <a href="{% url 'userprofile:wallet' %}">Back to Wallet</a>
+                                </div>
+                            </div>
+                        </div> <!-- My Account Tab Content End -->
+                    </div>
+                </div> <!-- My Account Page End -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

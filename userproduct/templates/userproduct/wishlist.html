@@ -1,0 +1,126 @@
+{% extends 'usershome/base.html' %}
+{% load static %}
+
+{% block title %}Wishlist{% endblock %}
+
+{% block content %}
+
+<div class="wishlist-area pb-100 pt-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form action="#">
+                    <div class="wishlist-table-content">
+                        {% if products %}
+                        <div class="table-content table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="width-thumbnail"></th>
+                                        <th class="width-name">Product</th>
+                                        <th class="width-price">Price</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for product in products %}
+                                    <tr>
+                                        <td class="product-thumbnail">
+                                            <img src="{{ product.product.thumbnail.url }}" alt="" style="width: 100%; max-width: 150px;">
+                                        </td>
+                                        
+                                        <td class="product-name">
+                                            <h5>{{ product.product.name }}</h5>
+                                        </td>
+                                        <td class="product-wishlist-price">
+                                            <span class="amount">
+                                                {% if product.product.offer_price %}
+                                                    <span class="new-price">${{ product.product.offer_price }}</span>
+                                                {% else %}
+                                                    <span class="old-price">${{ product.product.price }}</span>
+                                                {% endif %}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <input type="hidden" class="prod_id" value="{{ product.product_id }}">
+                                            {% csrf_token %}
+                                            <a href="{% url 'userproduct:product_details' pk=product.product.id %}" class="btn btn-secondary rounded">View</a>
+                                        </td>  
+                                        <td>
+                                            <button class="btn btn-danger rounded delete-wishlist-item">Remove</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>                        
+                        {% else %}
+                        <h1 style="text-align: center; font-weight:400">You have no products in Wishlist.</h1>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).on('click', '.delete-wishlist-item', function (e) {
+        e.preventDefault();
+        
+        var product_id = $(this).closest('tr').find('.prod_id').val();
+        var token = $('input[name=csrfmiddlewaretoken]').val();
+        var clickedButton = $(this);
+
+        if ($('.product-thumbnail').length === 0) {
+            $('.wishlist-table-content').html("<h1 style='text-align: center; font-weight:400'>You have no products in Wishlist.</h1>");
+            return;
+        }
+
+        $.ajax({
+            method: "POST",
+            url: '/delete-wishlist-item/',
+            data: {
+                'product_id': product_id,
+                'csrfmiddlewaretoken': token
+            },
+            success: function(response) {
+                if (response.status === 'Product removed from wishlist') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: response.status,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else if (response.status === 'Product not found in wishlist') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: response.status,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else if (response.status === 'Login to continue') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: response.status,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+                clickedButton.closest('tr').remove();
+
+                if ($('.product-thumbnail').length === 0) {
+                    $('.wishlist-table-content').html("<h1 style='text-align: center; font-weight:400'>You have no products in Wishlist.</h1>");
+                }
+            }
+        });
+    });
+</script>
+
+
+
+
+{% endblock %}

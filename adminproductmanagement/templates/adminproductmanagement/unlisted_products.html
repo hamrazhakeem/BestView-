@@ -1,0 +1,79 @@
+{% extends 'adminshome/base.html' %}
+{% load static %}
+
+{% block title %}Unlisted Products{% endblock %}
+
+{% block content %}
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div style="display: flex; justify-content: space-between;">
+          <h4 class="card-title">Unlisted Products</h4>
+          <a href="{% url 'adminproductmanagement:manage_product' %}"><button type="button" class="btn btn-icon-text" style="background-color: grey;">
+              Manage Products </button></a>
+        </div>
+        <ul class="navbar-nav w-100">
+            <li class="nav-item w-100">
+                <form method="GET" action="{% url 'adminproductmanagement:unlisted_products' %}" class="search-form form-inline">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" name="q" value="{% if query %}{{ query }}{% endif %}" placeholder="Search Product" class="form-control">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-success">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </li>
+        </ul>  
+        {% if products %}
+        <div class="table-responsive mt-5">
+          <table class="table table-bordered" style="background-color: #f2f2f2;">
+              <thead>
+                  <tr>
+                    <th> Name </th>
+                    <th> Type </th>
+                    <th> Price </th>
+                    <th> Thumbnail </th>
+                    <th> Category </th>
+                    <th> Brand </th>
+                    <th> Action </th>
+                  </tr>
+              </thead>
+              <tbody>
+                
+                  {% for product in products %}
+                  <tr>
+                      <td> {{ product.name }} </td>
+                      <td> {{ product.type }} </td>
+                      <td> {{ product.price }} </td>
+                      <td> <img src="{{ product.thumbnail.url }}" style="height: 100px; width: 100px;" alt=""> </td> <!-- Adjust the width as needed -->
+                      <td> {{ product.category }} </td>
+                      <td> {{ product.brand }} </td> 
+                      <td>
+                        <div style="display: flex; flex-direction: column;">
+                            <a href="{% url 'adminproductmanagement:edit_product' pk=product.pk %}" class="btn-link my-2">
+                                <button type="button" class="btn btn-outline-secondary btn-icon-text custom-btn" style="background-color: grey;">Edit <i class="mdi mdi-file-check btn-icon-append"></i></button>
+                            </a>                    
+                            <a href="{% url 'adminproductmanagement:restore_product' pk=product.pk %}" style="margin-bottom: 10px;">
+                                <button type="submit" class="btn btn-danger btn-icon-text" style="border: none; background-color: black;">Restore <i class="fas fa-folder-plus"></i></button>
+                            </a>
+                            <a href="{% url 'adminproductmanagement:delete_product' pk=product.pk %}">
+                                <button type="submit" class="btn btn-danger btn-icon-text">Delete <i class="mdi mdi-delete btn-icon-append"></i></button>
+                            </a>
+                        </div>
+                      </td>                    
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+        </div>
+        {% else %}
+        <h5 class="mt-3">No Unlisted Products Found.</h5>
+      {% endif %}
+      </div>
+    </div>
+  </div>
+
+  
+
+{% endblock %}

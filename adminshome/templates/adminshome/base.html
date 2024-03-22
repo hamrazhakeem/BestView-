@@ -1,0 +1,233 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  
+<!-- Mirrored from themewagon.github.io/corona-free-dark-bootstrap-admin-template/pages/samples/blank-page.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 28 Jan 2024 05:11:46 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Base{% endblock %}</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="{% static 'admin/vendors/mdi/css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/vendors/css/vendor.bundle.base.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'admin/vendors/jvectormap/jquery-jvectormap.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/vendors/flag-icon-css/css/flag-icon.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/vendors/owl-carousel-2/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/vendors/owl-carousel-2/owl.theme.default.min.css' %}">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End Plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="{% static 'admin/css/style.css' %}">
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="{% static 'admin/images/favicon.png' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  </head>
+  <body>
+    <div class="container-scroller">
+      <!-- partial:../../partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
+          <a class="sidebar-brand brand-logo" href="{% url 'adminshome:dashboard' %}"><i class="mdi mdi-home"></i></a>
+          <a class="sidebar-brand brand-logo-mini" href="{% url 'adminshome:dashboard' %}"><i class="mdi mdi-home"></i></a>
+        </div>
+        <ul class="nav">
+          <li class="nav-item profile">
+            <div class="profile-desc">
+              <div class="profile-pic">
+                <div class="profile-name">
+                  <h5 class="mb-0 font-weight-normal">Hamraz</h5>
+                  <span>Admin</span>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item nav-category">
+            <span class="nav-link">Navigation</span>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="{% url 'adminshome:dashboard' %}">
+              <span class="menu-icon">
+                <i class="mdi mdi-speedometer"></i>
+              </span>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+              <span class="menu-icon">
+                <i class="mdi mdi-glasses"></i>
+              </span>
+              <span class="menu-title">Manage Products</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-basic">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'adminproductmanagement:manage_category' %}">Category</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'adminproductmanagement:manage_brand' %}">Brand</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'adminproductmanagement:manage_product' %}">Product</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="{% url 'adminshome:manage_banner' %}">
+              <span class="menu-icon">
+                <i class="mdi mdi-laptop"></i>
+              </span>
+              <span class="menu-title">Manage Banners</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="{% url 'adminusermanagement:userlist' %}">
+              <span class="menu-icon">
+                <i class="mdi mdi-account"></i>
+              </span> 
+              <span class="menu-title">Manage Users</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="{% url 'admin_order_and_payment:manage_order' %}">
+              <span class="menu-icon">
+                <i class="mdi mdi-package-variant-closed"></i>
+              </span> 
+              <span class="menu-title">Manage Orders</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="{% url 'adminshome:manage_coupon' %}">
+              <span class="menu-icon">
+                <i class="fa-solid fa-ticket"></i>
+              </span>
+              <span class="menu-title">Manage Coupons</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:../../partials/_navbar.html -->
+        <nav class="navbar p-0 fixed-top d-flex flex-row">
+          <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
+            <a class="navbar-brand brand-logo-mini" href="{% url 'adminshome:dashboard' %}"><img src="{% static 'user/images/logo/logo.webp' %}" alt="logo" /></a>
+          </div>
+          <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+              <span class="mdi mdi-menu"></span>
+            </button>
+            
+            <ul class="navbar-nav navbar-nav-right">
+              <li class="nav-item dropdown">
+                <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
+                  <div class="navbar-profile">
+                    <p class="mb-0 d-none d-sm-block navbar-profile-name">Hamraz Hakeem</p>
+                    <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+                  </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item" href="{% url 'adminshome:adminsignout' %}">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-logout text-danger"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">Log out</p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                </div>
+              </li>
+            </ul>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+              <span class="mdi mdi-format-line-spacing"></span>
+            </button>
+          </div>
+        </nav>
+        <!-- partial -->
+        <div class="main-panel">
+          
+            <!-- content-wrapper ends -->
+            <!-- partial:../../partials/_footer.html -->
+
+
+
+
+            <div id="content">
+              {% block content %}{% endblock %}
+            </div>
+
+
+
+
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+
+
+    <!-- plugins:js -->
+    <script src="{% static 'admin/vendors/js/vendor.bundle.base.js' %}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="{% static 'admin/js/off-canvas.js' %}"></script>
+    <script src="{% static 'admin/js/hoverable-collapse.js' %}"></script>
+    <script src="{% static 'admin/js/misc.js' %}"></script>
+    <script src="{% static 'admin/js/settings.js' %}"></script>
+    <script src="{% static 'admin/js/todolist.js' %}"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <!-- End custom js for this page -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Plugin js for this page -->
+    <script src="{% static 'admin/vendors/chart.js/Chart.min.js' %}"></script>
+    <script src="{% static 'admin/vendors/progressbar.js/progressbar.min.js' %}"></script>
+    <script src="{% static 'admin/vendors/jvectormap/jquery-jvectormap.min.js' %}"></script>
+    <script src="{% static 'admin/vendors/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
+    <script src="{% static 'admin/vendors/owl-carousel-2/owl.carousel.min.js' %}"></script>
+    <!-- End plugin js for this page -->
+
+    <!-- Custom js for this page -->
+    <script src="{% static 'admin/js/dashboard.js' %}"></script>
+    <!-- End custom js for this page -->
+    <script src="{% static 'admin/js/chart.js' %}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <!-- endinject -->
+    {% if messages %}
+          {% for message in messages %}
+    <script>
+              const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top",
+                  showConfirmButton: true,
+                  timer: 4000,
+                  timerProgressBar: false,
+                  didOpen: (toast) => {
+                      toast.onmouseenter = Swal.stopTimer;
+                      toast.onmouseleave = Swal.resumeTimer;
+                  }
+              });
+              Toast.fire({
+                  icon: "{{ message.tags }}",  // You might need to map Django message tags to SweetAlert2 icons
+                  title: "{{ message }}"
+              });    
+  </script>
+  {% endfor %}
+      {% endif %}
+  </body>
+
+<!-- Mirrored from themewagon.github.io/corona-free-dark-bootstrap-admin-template/pages/samples/blank-page.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 28 Jan 2024 05:11:46 GMT -->
+</html>

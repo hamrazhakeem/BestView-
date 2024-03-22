@@ -1,0 +1,45 @@
+{% extends 'usershome/base.html' %}
+{% load static %}
+
+{% block title %}Order Success{% endblock %}
+
+{% block content %}
+
+<!--start page wrapper -->
+<div class="page-wrapper mb-5">
+    <div class="page-content">
+      <!--start shop cart-->
+      <section class="py-4">
+        <div class="container">
+          <div class="card py-3 mt-sm-3">
+            <div class="card-body text-center">
+              <i class="fa-sharp fa-solid fa-circle-check fa-4x mb-3" style="color: #45c90d;"></i>
+              <h2 class="h4 pb-3">Your order has been placed!</h2>
+              <h2>Track your order from 'Orders' Page.</h2>
+              <p>Incase of any Enquiries regarding the order, Contact us and use this Order ID: {{ order.order_id }}. </p>
+              <a href="{% url 'home' %}"><button class="btn theme-color" style="background-color: #e97730; color: white; transition: background-color 0.3s ease; font-weight:bold;" onmouseover="this.style.backgroundColor='black'" onmouseout="this.style.backgroundColor='#e97730'">Home</button></a>
+            </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--end shop cart-->
+    </div>
+  </div>
+  <!--end page wrapper -->
+
+
+{% if payment_method == 'PayPal' %}
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+      Swal.fire({
+          icon: 'success',
+          title: 'Transaction completed!',
+          showConfirmButton: false,
+          timer: 4000, 
+      });
+  </script>
+{% endif %}
+
+{% endblock %}
