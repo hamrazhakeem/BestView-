@@ -79,8 +79,9 @@
 </div>
 
 <!-- Include the PayPal JavaScript SDK -->
-<script src="https://www.paypal.com/sdk/js?client-id=AQe3HjxF13fp0QX3YgeGTX0QRTHNt5Py3RajZCCcWKItkLnRuC3W8sDtN5aQ3_2KHn_m5qUAsGtb9mX9&currency=USD"></script>
+<script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&currency=USD"></script>
 
+<!-- JavaScript code for PayPal buttons -->
 <script>
     paypal.Buttons({
         createOrder: function(data, actions) {
@@ -92,18 +93,17 @@
                 }]
             });
         },
-
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(details) {
                 document.getElementById('payment-method-input').value = 'PayPal';
                 document.getElementById('order-form').submit();
             });
         },
-
         onCancel: function(data) {
             window.location.href = '{% url "user_order_and_payment:payment_failed" %}';
         }
     }).render('#paypal-button-container');
 </script>
+
 
 {% endblock %}

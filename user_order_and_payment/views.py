@@ -11,6 +11,9 @@ from adminproductmanagement.models import Coupons, ProductVariant, UsedCoupons
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.views.generic import TemplateView
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Create your views here.
 
@@ -110,13 +113,16 @@ def payment_method(request):
             return redirect("user_order_and_payment:payment_method")
 
     if applied_coupon_code is None:
-        context = {"cart": cart, "cart_items": cart_items, "cart_count": cart_count}
+        paypal_client_id = os.getenv("PAYPAL_CLIENT_ID")
+        context = {"cart": cart, "cart_items": cart_items, "cart_count": cart_count, "paypal_client_id": paypal_client_id}
     else:
+        paypal_client_id = os.getenv("PAYPAL_CLIENT_ID")
         context = {
             "cart": cart,
             "cart_items": cart_items,
             "cart_count": cart_count,
             "applied_coupon_code": applied_coupon_code,
+            "paypal_client_id": paypal_client_id
         }
 
     return render(request, "user_order_and_payment/payment_method.html", context)
