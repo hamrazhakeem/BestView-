@@ -38,7 +38,7 @@ ALLOWED_HOSTS = ['127.0.0.1', '16.170.213.231', '0.0.0.0']
 
 SITE_ID = 1
 
-CSRF_TRUSTED_ORIGINS = ['http://16.170.213.231']       
+CSRF_TRUSTED_ORIGINS = ['https://16.170.213.231', 'https://bestview.hamrazhakeem.site', 'https://www.bestview.hamrazhakeem.site']       
 
 # Application definition
 
