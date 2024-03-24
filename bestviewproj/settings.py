@@ -36,6 +36,8 @@ ALLOWED_HOSTS = ['127.0.0.1:8000', '16.170.213.231', '0.0.0.0']
 
 SITE_ID = 1
 
+CSRF_TRUSTED_ORIGINS = ['http://3.25.67.70']       
+
 # Application definition
 
 INSTALLED_APPS = [
