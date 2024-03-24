@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG") == "True"
 
-ALLOWED_HOSTS = ['127.0.0.1:8000', '16.170.213.231', '0.0.0.0']
+ALLOWED_HOSTS = ['127.0.0.1', '16.170.213.231', '0.0.0.0']
 
 SITE_ID = 1
 
