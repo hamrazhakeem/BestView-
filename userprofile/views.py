@@ -12,6 +12,9 @@ from user_order_and_payment.models import Order, OrderItems
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from adminproductmanagement.models import Coupons, ProductVariant
 from django.db.models import Q
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Create your views here.
 
@@ -386,7 +389,9 @@ def cash_deposit_page(request):
         cart_items = None
         cart_count = 0
 
-    context = {"cart": cart, "cart_items": cart_items, "cart_count": cart_count}
+    paypal_client_id = os.getenv("PAYPAL_CLIENT_ID")
+
+    context = {"cart": cart, "cart_items": cart_items, "cart_count": cart_count, 'paypal_client_id':paypal_client_id}
 
     return render(request, "userprofile/cash_deposit_page.html", context)
 
