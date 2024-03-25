@@ -25,6 +25,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = "__all__"
+        exclude = ["offer_price"]
 
     def clean_price(self):
         price = self.cleaned_data.get("price")
