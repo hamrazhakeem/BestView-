@@ -115,6 +115,10 @@
         background-color: #001d35;
         opacity: 8%;
       }
+      .register-link {
+        margin-top: 10px; /* Adjust the margin-top value to increase or decrease the space */
+    }
+    
       
       
 </style>
@@ -130,27 +134,24 @@
 
                     <div class="tab-content">
                         <div id="lg1" class="tab-pane active">
-                            <div class="login-form-container">
-                                <div class="login-register-form">
-                                    <form method="post">
-                                        {% csrf_token %}
-                                        {{ login_form|crispy }}
-                                        <div class="button-box btn-hover">
-                                            <button type="submit">Login</button>
-                                        </div>
-                                        <div class="login-toggle-btn">
-                                            <a href="{% url 'forgot_password' %}" class="mt-3">Forgot Password?</a>
-                                        </div>
-                                        <div>
-                                            <p style="display: inline;">Don't have an Account?</p>
-                                            <a href="{% url 'signup' %}" style="display: inline-block;">Register</a>
-                                        </div>                                        
-                                    </form>
-                                </div>
-
-                                
-                              
+                          <div class="login-form-container">
+                            <div class="login-register-form">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {{ login_form|crispy }}
+                                    <div class="button-box btn-hover">
+                                        <button type="submit">Login</button>
+                                    </div>
+                                    <div class="login-toggle-btn">
+                                        <a href="{% url 'forgot_password' %}" class="mt-3">Forgot Password?</a>
+                                    </div>
+                                    <div class="register-link">
+                                        <p>Don't have an Account?</p>
+                                        <a href="{% url 'signup' %}"><h6>Register </h6></a>
+                                    </div>                                        
+                                </form>
                             </div>
+                        </div>
                             <div class="mt-5" style="text-align: center;">
                               <p>*Upon creating an account, a $20 bonus will be credited to your wallet, and a Signup bonus coupon will be applied to your account.</p>
                             </div>
