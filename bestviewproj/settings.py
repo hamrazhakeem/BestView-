@@ -36,7 +36,7 @@ DEBUG = os.getenv("DEBUG") == "True"
 
 ALLOWED_HOSTS = ['127.0.0.1', '16.170.213.231', '0.0.0.0']
 
-SITE_ID = 1
+SITE_ID = 2
 
 CSRF_TRUSTED_ORIGINS = ['https://16.170.213.231', 'https://bestview.hamrazhakeem.site', 'https://www.bestview.hamrazhakeem.site']       
 
