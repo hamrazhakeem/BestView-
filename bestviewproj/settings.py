@@ -80,6 +80,8 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 AUTH_USER_MODEL = "usershome.CustomUser"
 
 USE_TZ = True
