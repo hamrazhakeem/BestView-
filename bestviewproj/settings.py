@@ -70,6 +70,8 @@ INSTALLED_APPS = [
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
+        "CLIENT_ID": os.getenv("CLIENT_ID"),
+        "CLIENT_SECRET": os.getenv("CLIENT_SECRET"),
         "SCOPE": [
             "profile",
             "email",
