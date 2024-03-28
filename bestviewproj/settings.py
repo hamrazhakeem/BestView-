@@ -31,11 +31,15 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG") == "True"
 
-ALLOWED_HOSTS = ['127.0.0.1', '16.170.213.231', '0.0.0.0']
+ALLOWED_HOSTS = ["127.0.0.1", "16.170.213.231", "0.0.0.0"]
 
 SITE_ID = 7
 
-CSRF_TRUSTED_ORIGINS = ['https://16.170.213.231', 'https://bestview.hamrazhakeem.site', 'https://www.bestview.hamrazhakeem.site']       
+CSRF_TRUSTED_ORIGINS = [
+    "https://16.170.213.231",
+    "https://bestview.hamrazhakeem.site",
+    "https://www.bestview.hamrazhakeem.site",
+]
 
 # Application definition
 
@@ -166,7 +170,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
