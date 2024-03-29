@@ -84,7 +84,8 @@ def payment_method(request):
                     original_subtotal = item.product.offer_price * item.quantity
                     item.subtotal = original_subtotal
                     item.save()
-
+    if available_coupons:
+        coupon = Coupons.objects.get(code=applied_coupon_code)
     user = request.user
     try:
         cart = Cart.objects.get(user=user)
@@ -122,6 +123,7 @@ def payment_method(request):
             "cart_items": cart_items,
             "cart_count": cart_count,
             "applied_coupon_code": applied_coupon_code,
+            "coupon":coupon,
             "paypal_client_id": paypal_client_id
         }
 

@@ -17,6 +17,12 @@
         text-overflow: ellipsis; /* Show ellipsis for overflow content */
         white-space: nowrap; /* Prevent wrapping of text */
     }   
+    @media only screen and (max-width: 768px) {
+        .easyzoom-style {
+            /* Override the existing styles to disable zoom */
+            pointer-events: none; /* Disable pointer events to prevent clicking */
+        }
+    }
 </style>
 
 <div class="product-details-area pb-100 pt-100">

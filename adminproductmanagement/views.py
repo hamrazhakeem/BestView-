@@ -256,6 +256,8 @@ def edit_product(request, pk=None):
     if request.user.is_superuser:
         product = get_object_or_404(Product, pk=pk)
         variants = ProductVariant.objects.filter(product=product)
+        offers = ProductOffer.objects.filter(product=product, status="Active")  # Move outside of the if statement
+        
         if request.method == "POST":
             form = ProductForm(request.POST, request.FILES, instance=product)
             if form.is_valid():
@@ -264,7 +266,7 @@ def edit_product(request, pk=None):
                 return redirect("adminproductmanagement:manage_product")
         else:
             form = ProductForm(instance=product)
-            offers = ProductOffer.objects.filter(product=product, status="Active")
+        
         return render(
             request,
             "adminproductmanagement/edit_product.html",
@@ -272,6 +274,7 @@ def edit_product(request, pk=None):
         )
     else:
         return redirect("adminshome:adminsignin")
+
 
 
 @login_required(login_url="adminshome:adminsignin")

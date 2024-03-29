@@ -45,6 +45,9 @@
 
                     <div class="mt-5">
                         <h5 style="font-weight: bold;">Payable Amount - ${{ cart.total }}</h5>
+                        {% if 'applied_coupon_code' in request.session %}
+                            <h6 style="font-weight: bold;">{{ coupon.discount_percentage }}% off with coupon</h6>
+                        {% endif %}
                     </div>
                 </div>
             </div>

@@ -5,7 +5,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from .models import Banner
-from .forms import BannerForm, AddCouponFrom
+from .forms import BannerForm, AddCouponForm
 from adminproductmanagement.models import Coupons
 from user_order_and_payment.models import Order, OrderItems
 from .render_pdf import render_to_pdf
@@ -463,9 +463,9 @@ def list_coupon(request, coupon_id):
 
 def add_coupon(request):
     if request.user.is_superuser:
-        form = AddCouponFrom()
+        form = AddCouponForm()
         if request.method == "POST":
-            form = AddCouponFrom(request.POST)
+            form = AddCouponForm(request.POST)
             if form.is_valid():
                 form.save()
                 messages.success(request, "New Coupon Added")
