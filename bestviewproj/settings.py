@@ -31,12 +31,12 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG") == "False"
 
-ALLOWED_HOSTS = ["127.0.0.1", "16.170.213.231", "0.0.0.0"]
+ALLOWED_HOSTS = ["127.0.0.1", "16.171.25.241", "0.0.0.0"]
 
 SITE_ID = 7
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://16.170.213.231",
+    "https://16.171.25.241",
     "https://bestview.hamrazhakeem.site",
     "https://www.bestview.hamrazhakeem.site",
 ]
