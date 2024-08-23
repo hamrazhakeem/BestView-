@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bestview-app
+spec:
+  selector:
+    matchLabels:
+      app: bestview-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bestview-app
+    spec:
+      containers:
+      - name: bestview-app
+        image: hamrazhakeem/bestviewapp
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_NAME
+          value: "dbbestview"
+        - name: DATABASE_USER
+          value: "postgres"
+        - name: DATABASE_PASSWORD
+          value: "Hamraz458"
+        - name: DATABASE_HOST
+          value: "postgres"
+        - name: DATABASE_PORT
+          value: "5432"
+        command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bestview-app
+spec:
+  type: NodePort
+  ports:
+    - port: 8000
+      targetPort: 8000
+      nodePort: 30007
+  selector:
+    app: bestview-app
