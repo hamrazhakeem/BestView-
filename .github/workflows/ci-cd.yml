@@ -47,7 +47,7 @@ jobs:
           chmod 600 /tmp/aws_key.pem
 
           # Run SSH commands
-          ssh -o StrictHostKeyChecking=no -i /tmp/aws_key.pem $AWS_USER@$AWS_IP << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i /tmp/aws_key.pem $AWS_USER@$AWS_IP << EOF
             docker pull $DOCKER_USER/app:bestview
             docker-compose down
             docker-compose up -d
