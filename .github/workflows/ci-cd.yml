@@ -27,28 +27,18 @@ jobs:
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASS: ${{ secrets.DOCKER_PASSWORD }}
-          AWS_IP: ${{ secrets.AWS_IP }}
-          AWS_USER: ${{ secrets.AWS_USER }}
+          # AWS_IP: ${{ secrets.AWS_IP }}
+          # AWS_USER: ubuntu
         run: |
           docker build -t app:bestview .
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
           docker tag app:bestview $DOCKER_USER/app:bestview
           docker push $DOCKER_USER/app:bestview
 
-      - name: Deploy to AWS EC2
-        env:
-          AWS_IP: ${{ secrets.AWS_IP }}
-          AWS_USER: ${{ secrets.AWS_USER }}
-          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
-          AWS_PEM_FILE: ${{ secrets.AWS_PEM_FILE }}
-        run: |
-          echo "$AWS_PEM_FILE" > /tmp/aws_key.pem
-          chmod 600 /tmp/aws_key.pem
-
-          ssh -o StrictHostKeyChecking=no -i /tmp/aws_key.pem $AWS_USER@$AWS_IP << EOF
-            docker pull $DOCKER_USER/app:bestview
-            docker-compose down
-            docker-compose up -d
-            docker-compose exec app python manage.py collectstatic --noinput
-            docker-compose exec app python manage.py migrate
-          EOF
+      # - name: Deploy to AWS EC2
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no $AWS_USER@$AWS_IP << 'EOF'
+      #       docker pull $DOCKER_USER/app:bestview
+      #       docker-compose down
+      #       docker-compose up -d
+      #     EOF
