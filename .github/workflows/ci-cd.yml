@@ -42,11 +42,9 @@ jobs:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
           AWS_PEM_FILE: ${{ secrets.AWS_PEM_FILE }}
         run: |
-          # Create a temporary file for the PEM key
           echo "$AWS_PEM_FILE" > /tmp/aws_key.pem
           chmod 600 /tmp/aws_key.pem
 
-          # Run SSH commands
           ssh -o StrictHostKeyChecking=no -i /tmp/aws_key.pem $AWS_USER@$AWS_IP << EOF
             docker pull $DOCKER_USER/app:bestview
             docker-compose down
