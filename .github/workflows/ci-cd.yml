@@ -27,8 +27,6 @@ jobs:
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASS: ${{ secrets.DOCKER_PASSWORD }}
-          AWS_IP: ${{ secrets.AWS_IP }}
-          AWS_USER: ubuntu
         run: |
           docker build -t app:bestview .
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
@@ -36,10 +34,15 @@ jobs:
           docker push $DOCKER_USER/app:bestview
 
       - name: Deploy to AWS EC2
+        env:
+          AWS_IP: ${{ secrets.AWS_IP }}
+          AWS_USER: ${{ secrets.AWS_USER }}
+          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          ssh -o StrictHostKeyChecking=no $AWS_USER@$AWS_IP << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i /path/to/your/private/key.pem $AWS_USER@$AWS_IP << 'EOF'
             docker pull $DOCKER_USER/app:bestview
             docker-compose down
             docker-compose up -d
             docker-compose exec app python manage.py collectstatic --noinput
+            docker-compose exec app python manage.py migrate
           EOF
