@@ -39,7 +39,7 @@ jobs:
           AWS_USER: ${{ secrets.AWS_USER }}
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          ssh -o StrictHostKeyChecking=no -i /path/to/your/private/key.pem $AWS_USER@$AWS_IP << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i C:\Users\Hamraz Hakeem\Downloads\bestview-containerized.pem $AWS_USER@$AWS_IP << 'EOF'
             docker pull $DOCKER_USER/app:bestview
             docker-compose down
             docker-compose up -d
