@@ -12,7 +12,7 @@ services:
  app:
   build: .
   volumes:
-   - static_volume:/bestview/staticfiles
+   - static_volume:/bestview/static
    - .:/bestview 
   ports:
    - 8000:8000
