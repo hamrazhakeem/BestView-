@@ -12,6 +12,7 @@ services:
  app:
   build: .
   volumes:
+   - static_volume:/bestview/staticfiles
    - .:/bestview
   ports:
    - 8000:8000
@@ -24,4 +25,5 @@ services:
    - .env 
 
 volumes:
+ static_volume:
  postgres_data:

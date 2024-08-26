@@ -23,10 +23,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Collect static files
-        run: |
-          python manage.py collectstatic --noinput
-
       - name: Build and push Docker image
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
